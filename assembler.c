@@ -82,6 +82,8 @@ int isOpcode(char * pStr){
     return 0;
   }else if(strcmp(pStr, "nop") == 0){
     return 0;
+  }else if(strcmp(pStr, ".fill") == 0){
+    return 0;
   }else{
     return -1;
   } 
@@ -358,7 +360,7 @@ int getInst(char *op, char *arg1, char *arg2, char *arg3, char* arg4, int lineNu
     }
     
     
-    if(arg3[0] == '#'){
+    if(arg3[0] == '#' || arg3[0] == 'x'){
       imm = toNum(arg3);
       if(imm < -16 || imm > 15){
 	printf("ERROR: '%s' is an invalid constant for ADD\n", arg3);
@@ -388,7 +390,7 @@ int getInst(char *op, char *arg1, char *arg2, char *arg3, char* arg4, int lineNu
       exit(4);
     }
     
-    if(arg3[0] == '#'){
+    if(arg3[0] == '#' || arg3[0] == 'x'){
       imm = toNum(arg3);
       if(imm < -16 || imm > 15){
 	printf("ERROR: '%s' is an invalid constant for ADD\n", arg3);
@@ -1069,6 +1071,11 @@ void runSecondPass(FILE* lInfile, FILE* lOutfile){
 	   if(oInst == -1){
 	     if(strcmp(lOpcode,".fill") == 0){
 	       oInst = toNum(lArg1);
+	       if(oInst > 32767 || oInst < -32768){
+		 printf("ERROR: '%s' is out of range for .FILL\n", lArg1);
+		 exit(3);
+	       }
+	       oInst = oInst & toNum("x0ffff");              /* Clear everything before last word */
 	     }else if(strcmp(lOpcode,"halt") == 0){
 	       oInst = toNum("xf025");
 	     }else if(strcmp(lOpcode,"nop") == 0){

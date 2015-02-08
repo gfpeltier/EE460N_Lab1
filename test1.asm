@@ -8,5 +8,5 @@ A	LEA R1, Y
 	HALT
 Y	.FILL #263
 	.FILL #13
-	.FILL #6
+	.FILL #1000000
 	.END
