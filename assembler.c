@@ -1,3 +1,8 @@
+/*
+	Name 1: Grant Peltier
+	UTEID 1: gfp237
+*/
+
 #include <stdio.h> /* standard input/output library */
 #include <stdlib.h> /* Standard C Library */
 #include <string.h> /* String operations library */
@@ -238,6 +243,10 @@ void runFirstPass(FILE* lInfile){
 	   }
 	   if(lLabel[0] == 'x'){
 	     printf("ERROR: The label '%s' is invalid because it starts with the letter 'x'\n", lLabel);
+	     exit(4);
+	   }
+	   if(strlen(lLabel) > MAX_LABEL_LEN){
+	     printf("ERROR: The label '%s' is invalid because it is greater than 20 characters in length\n", lLabel);
 	     exit(4);
 	   }
 	   if(isOpcode(lLabel) == 0){
@@ -819,7 +828,7 @@ int getInst(char *op, char *arg1, char *arg2, char *arg3, char* arg4, int lineNu
 	  return inst;
 	}
       }
-      printf("ERROR: '%s' is an undefined label\n",arg1);
+      printf("ERROR: '%s' is an undefined label\n",arg2);
       exit(1);
     }
 
@@ -1131,7 +1140,7 @@ int main(int argc, char* argv[]) {
      runSecondPass(infile, outfile);
 
 
-
+     printf("Assembly Successful\n");
      /*Close I/O files*/
      fclose(infile);
      fclose(outfile);
